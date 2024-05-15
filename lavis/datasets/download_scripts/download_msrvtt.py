@@ -5,7 +5,7 @@
  For full license text, see the LICENSE file in the repo root or https://opensource.org/licenses/BSD-3-Clause
 """
 
-import os
+import os, sys; 
 from pathlib import Path
 
 from omegaconf import OmegaConf
@@ -28,19 +28,23 @@ from lavis.common.utils import (
 #        "test": "https://download2390.mediafire.com/xxxxxxxxxxxx/czh8sezbo9s4692/test_videos.zip",
 #    }
 # 3. Paste the link address to DATA_URL
-
+DATA_NAME = {
+    "train" : "train_val_videos.zip",
+    "test" : "test_videos.zip"
+}
 DATA_URL = {
-    "train": "https://download2295.mediafire.com/4bb7p74xrbgg/x3rrbe4hwp04e6w/train_val_videos.zip",
-    "test": "https://download2390.mediafire.com/79hfq3592lqg/czh8sezbo9s4692/test_videos.zip",
+    "train": "https://download1078.mediafire.com/eceorqopp5egxA_sQpt1vXfeJswpBp2hNvviY1IaV1yAyIkPTpqfuPjuuc-W5-HDvstiDOn0bHj7OaW7AZDCJVmd5y6A31DlVIp20SJaEZgEzZccDUEOG6fLjuzNBPkEiE3ILhNmdevAqaOLiS0TT2g8VrHG6nf5zdJbp4hgYz0I/x3rrbe4hwp04e6w/train_val_videos.zip",
+    "test": "https://download2280.mediafire.com/oi7gw187e02gLYTjQ69hkiKYV9yJ0s9UzkiRs06UfcfQ8RWxrMbDVEAKUF2dhEO5ZZW0T49h9LmpqYx_QcOUo8UHb0OdIXIY5xscGkcC0H78q8dYcpb9KhlfhFFz63y__iGz8313vKt5e28meLcxKExdyXw7G0c_tcoBgeYjyd3e/czh8sezbo9s4692/test_videos.zip",
 }
 
 
-def download_datasets(root, url):
+def download_datasets(root, url, filename):
     """
     Download the Imagenet-R dataset archives and expand them
     in the folder provided as parameter
     """
-    download_and_extract_archive(url=url, download_root=root)
+    
+    download_and_extract_archive(url=url, download_root=root, filename=filename)
 
 
 def merge_datasets(download_path, storage_path):
@@ -72,12 +76,12 @@ def merge_datasets(download_path, storage_path):
 
 if __name__ == "__main__":
 
-    config_path = get_abs_path("configs/datasets/msrvtt/defaults_cap.yaml")
-
+    config_path = get_abs_path("configs/datasets/msrvtt/defaults_qa.yaml")
+    
     storage_dir = OmegaConf.load(
         config_path
-    ).datasets.msrvtt_cap.build_info.videos.storage
-
+    ).datasets.msrvtt_qa.build_info.videos.storage
+    print(storage_dir)
     download_dir = Path(get_cache_path(storage_dir)).parent / "download"
     storage_dir = Path(get_cache_path(storage_dir))
 
@@ -88,7 +92,7 @@ if __name__ == "__main__":
     try:
         for k, v in DATA_URL.items():
             print("Downloading {} to {}".format(v, k))
-            download_datasets(download_dir, v)
+            download_datasets(download_dir, v, DATA_NAME[k])
     except Exception as e:
         # remove download dir if failed
         cleanup_dir(download_dir)

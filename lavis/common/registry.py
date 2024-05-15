@@ -278,6 +278,7 @@ class Registry:
 
     @classmethod
     def get_path(cls, name):
+        print(cls.mapping["paths"])
         return cls.mapping["paths"].get(name, None)
 
     @classmethod
