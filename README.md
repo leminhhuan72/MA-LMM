@@ -76,6 +76,11 @@ Then extract video frames of each video with fps=10.
 ## Running
 
 ### Download Pre-trained LLM
+Remember to install git-lfs before cloning the repo from hugginface. Use these commands: 
+```c
+sudo apt-get install git-lfs
+git-lfs install
+```
 We use Vicuna-v1.1 as our pre-trained LLM weights, you can download from this [link](https://github.com/lm-sys/FastChat/blob/main/docs/vicuna_weights_version.md) as arrange in this format.
    ```
    ├── llm
